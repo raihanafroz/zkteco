@@ -43,13 +43,33 @@ The package will automatically register itself.
 
 * __Connect__ 
 ```php
-//    after creating objact you have to cannect and disable device
-//    Connect
-    $zk->connect();
-//    Disable 
-    $zk->disableDevice();   
+//    connect
+
+    $zk->connect();   
 ```
 
+* __Disconnect__ 
+```php
+//    disconnect
+
+    $zk->disconnect();   
+```
+
+* __Enable Device__ 
+```php
+//    enable
+
+    $zk->enableDevice();   
+```
+> **NOTE**: You have to call after read/write any info of Device.
+
+* __Disable Device__ 
+```php
+//    disable 
+
+    $zk->disableDevice(); 
+```
+> **NOTE**: You have to call before read/write any info of Device. 
 
 
 
