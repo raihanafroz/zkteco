@@ -25,8 +25,9 @@ The package will automatically register itself.
 
 The ZKTeco Class `use Rats\Zkteco\Lib\ZKTeco;` class.
 
+Create a object of ZKTeco class.
+
 ```php
-// create ZKTeco object
 //  1 s't parameter is string $ip Device IP Address
 //  2 nd  parameter is integer $port Default: 4370
   
