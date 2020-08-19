@@ -1,4 +1,4 @@
-###ZKTeco - Laravel Library
+# ZKTeco - Laravel Library #
 
 [![Issues](https://img.shields.io/github/issues/raihanafroz/zkteco?style=flat-square)](https://github.com/raihanafroz/zkteco/issues)
 [![Forks](https://img.shields.io/github/forks/raihanafroz/zkteco?style=flat-square)](https://github.com/raihanafroz/zkteco/network/members)
@@ -19,3 +19,27 @@ You can install the package via composer:
 composer require rats/zkteco
 ```
 The package will automatically register itself.
+
+
+## Usage
+
+The ZKTeco Class `use Rats\Zkteco\Lib\ZKTeco;` class.
+
+```php
+// create ZKTeco object
+//  1 s't parameter is string $ip Device IP Address
+//  2 nd  parameter is integer $port Default: 4370
+  
+    $zk = new ZKTeco('192.168.1.201');
+    
+```
+
+
+
+
+
+
+
+
+
+# end
