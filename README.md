@@ -33,6 +33,9 @@ Create a object of ZKTeco class.
   
     $zk = new ZKTeco('192.168.1.201');
     
+//  or you can use    
+//    $zk = new ZKTeco('192.168.1.201', 8080);
+    
 ```
 
 
