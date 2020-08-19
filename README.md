@@ -33,7 +33,7 @@ Create a object of ZKTeco class.
   
     $zk = new ZKTeco('192.168.1.201');
     
-//  or you can use    
+//  or you can use with port
 //    $zk = new ZKTeco('192.168.1.201', 8080);
     
 ```
