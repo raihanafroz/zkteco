@@ -23,7 +23,7 @@ The package will automatically register itself.
 
 ## Usage
 
-Create a object of ZKTeco class.
+1. Create a object of ZKTeco class.
 
 ```php
     use Rats\Zkteco\Lib\ZKTeco;
@@ -38,7 +38,16 @@ Create a object of ZKTeco class.
     
 ```
 
+2. Call ZKTeco methods
 
+**Connect**
+```php
+//    after creating objact you have to cannect and disable device
+//    Connect
+    $zk->connect();
+//    Disable 
+    $zk->disableDevice();   
+```
 
 
 
