@@ -1,0 +1,19 @@
+{
+    "name": "rats/zktec",
+    "description": "ZKTec Laravel Library",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raihan Afroz",
+            "email": "you@example.com"
+        }
+    ],
+    "autoload": {
+      "psr-4":{
+          "Rats\\Zkteco\\": "src"
+      }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
