@@ -44,13 +44,14 @@ The package will automatically register itself.
 * __Connect__ 
 ```php
 //    connect
-
+//    this return bool
     $zk->connect();   
 ```
 
 * __Disconnect__ 
 ```php
 //    disconnect
+//    this return bool
 
     $zk->disconnect();   
 ```
@@ -58,6 +59,7 @@ The package will automatically register itself.
 * __Enable Device__ 
 ```php
 //    enable
+//    this return bool/mixed
 
     $zk->enableDevice();   
 ```
@@ -66,6 +68,7 @@ The package will automatically register itself.
 * __Disable Device__ 
 ```php
 //    disable 
+//    this return bool/mixed
 
     $zk->disableDevice(); 
 ```
