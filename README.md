@@ -12,7 +12,7 @@ __Requires:__  **Laravel** >= **6.0**
 
 __License:__ MIT or later
 
-## Instructions:
+## Installation:
 You can install the package via composer:
 
 ``` bash
