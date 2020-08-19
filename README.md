@@ -40,7 +40,7 @@ The package will automatically register itself.
 
 2. Call ZKTeco methods
 
-**Connect**
+* __Connect__ 
 ```php
 //    after creating objact you have to cannect and disable device
 //    Connect
