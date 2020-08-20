@@ -142,10 +142,95 @@ The package will automatically register itself.
 
 * __Device Name__ 
 ```php
-//    get device device name
+//    get device name
 //    this return bool/mixed
 
     $zk->deviceName(); 
+```
+
+* __Get Device Time__ 
+```php
+//    get device time
+
+//    return bool/mixed bool|mixed Format: "Y-m-d H:i:s"
+
+    $zk->getTime(); 
+```
+
+* __Set Device Time__ 
+```php
+//    set device time
+//    parameter string $t Format: "Y-m-d H:i:s"
+//    return bool/mixed
+
+    $zk->setTime(); 
+```
+
+* __Get Users__ 
+```php
+//    get User
+//    this return array[]
+
+    $zk->getUser(); 
+```
+
+* __Set Users__ 
+```php
+//    set user
+
+//    1 s't parameter int $uid Unique ID (max 65535)
+//    2 nd parameter int|string $userid ID in DB (same like $uid, max length = 9, only numbers - depends device setting)
+//    3 rd parameter string $name (max length = 24)
+//    4 th parameter int|string $password (max length = 8, only numbers - depends device setting)
+//    5 th parameter int $role Default Util::LEVEL_USER
+//    6 th parameter int $cardno Default 0 (max length = 10, only numbers
+
+//    return bool|mixed
+
+    $zk->setUser(); 
+```
+
+* __Clear All Admin__ 
+```php
+//    remove all admin
+//    return bool|mixed
+
+    $zk->clearAdmin(); 
+```
+
+* __Clear All Users__ 
+```php
+//    remove all users
+//    return bool|mixed
+
+    $zk->clearAdmin(); 
+```
+
+* __Remove A User__ 
+```php
+//    remove a user by $uid
+//    parameter integer $uid
+//    return bool|mixed
+
+    $zk->removeUser(); 
+```
+
+* __Get Attendance Log__ 
+```php
+//    get attendance log
+
+//    return array[]
+
+    $zk->getAttendance(); 
+```
+
+* __Clear Attendance Log__ 
+```php
+//    clear attendance log
+
+//    return bool/mixed
+
+    $zk->clearAttendance(); 
 ```
 
 

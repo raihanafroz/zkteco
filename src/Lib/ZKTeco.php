@@ -253,6 +253,41 @@ class ZKTeco{
     return User::set($this, $uid, $userid, $name, $password, $role, $cardno);
   }
 
+
+
+  /**
+   * Remove All users
+   *
+   * @return bool|mixed
+   */
+  public function clearUsers()
+  {
+    return User::clear($this);
+  }
+
+  /**
+   * Remove admin
+   *
+   * @return bool|mixed
+   */
+  public function clearAdmin()
+  {
+    return User::clearAdmin($this);
+  }
+
+  /**
+   * Remove user by UID
+   *
+   * @param integer $uid
+   * @return bool|mixed
+   */
+  public function removeUser($uid)
+  {
+    return User::remove($this, $uid);
+  }
+
+
+
   /**
    * Get fingerprint data array by UID
    * TODO: Can get data, but don't know how to parse the data. Need more documentation about it...
@@ -290,36 +325,6 @@ class ZKTeco{
     return Fingerprint::remove($this, $uid, $data);
   }
 
-  /**
-   * Remove All users
-   *
-   * @return bool|mixed
-   */
-  public function clearUsers()
-  {
-    return User::clear($this);
-  }
-
-  /**
-   * Remove admin
-   *
-   * @return bool|mixed
-   */
-  public function clearAdmin()
-  {
-    return User::clearAdmin($this);
-  }
-
-  /**
-   * Remove user by UID
-   *
-   * @param integer $uid
-   * @return bool|mixed
-   */
-  public function removeUser($uid)
-  {
-    return User::remove($this, $uid);
-  }
 
   /**
    * Get attendance log
