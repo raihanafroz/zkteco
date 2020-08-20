@@ -75,6 +75,81 @@ The package will automatically register itself.
 > **NOTE**: You have to call before read/write any info of Device. 
 
 
+* __Device Version__ 
+```php
+//    get device version 
+//    this return bool/mixed
+
+    $zk->version(); 
+```
+
+
+* __Device Os Version__ 
+```php
+//    get device os version 
+//    this return bool/mixed
+
+    $zk->osVersion(); 
+```
+
+* __Platform__ 
+```php
+//    get platform 
+//    this return bool/mixed
+
+    $zk->platform(); 
+```
+
+* __Firmware Version__ 
+```php
+//    get firmware version
+//    this return bool/mixed
+
+    $zk->fmVersion(); 
+```
+
+* __Work Code__ 
+```php
+//    get work code
+//    this return bool/mixed
+
+    $zk->workCode(); 
+```
+
+* __SSR__ 
+```php
+//    get SSR
+//    this return bool/mixed
+
+    $zk->ssr(); 
+```
+
+* __Pin Width__ 
+```php
+//    get  Pin Width
+//    this return bool/mixed
+
+    $zk->pinWidth(); 
+```
+
+* __Serial Number__ 
+```php
+//    get device serial number
+//    this return bool/mixed
+
+    $zk->serialNumber(); 
+```
+
+* __Device Name__ 
+```php
+//    get device device name
+//    this return bool/mixed
+
+    $zk->deviceName(); 
+```
+
+
+
 
 
 
