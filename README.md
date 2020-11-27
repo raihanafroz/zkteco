@@ -21,6 +21,8 @@ composer require rats/zkteco
 ```
 The package will automatically register itself.
 
+You have to enable your php socket if it is not enable. 
+
 
 ## Usage
 
