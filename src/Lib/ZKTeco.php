@@ -366,4 +366,70 @@ class ZKTeco{
   {
     return Time::get($this);
   }
+
+
+  /**
+   * turn off the device
+   *
+   * @return bool|mixed
+   */
+  public function shutdown()
+  {
+    return Device::powerOff($this);
+  }
+
+  /**
+   * restart the device
+   *
+   * @return bool|mixed
+   */
+  public function restart()
+  {
+    return Device::restart($this);
+  }
+
+
+  /**
+   * make sleep mood the device
+   *
+   * @return bool|mixed
+   */
+  public function sleep()
+  {
+    return Device::sleep($this);
+  }
+
+
+  /**
+   * resume the device from sleep
+   *
+   * @return bool|mixed
+   */
+  public function resume()
+  {
+    return Device::resume($this);
+  }
+
+
+  /**
+   * voice test Sound will "Thank you"
+   *
+   * @return bool|mixed
+   */
+  public function testVoice()
+  {
+    return Device::testVoice($this);
+  }
+
+
+  public function clearLCD()
+  {
+    return Device::clearLCD($this);
+  }
+
+
+  public function writeLCD()
+  {
+    return Device::writeLCD($this, 2, "RAIHAN Afroz Topu");
+  }
 }

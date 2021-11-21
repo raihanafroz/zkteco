@@ -92,6 +92,46 @@ The package will automatically register itself.
     $zk->osVersion(); 
 ```
 
+* __Power Off__ 
+```php
+//    turn off the device 
+//    this return bool/mixed
+
+    $zk->shutdown(); 
+```
+
+* __Restart__ 
+```php
+//    restart the device 
+//    this return bool/mixed
+
+    $zk->restart(); 
+```
+
+* __Sleep__ 
+```php
+//    sleep the device 
+//    this return bool/mixed
+
+    $zk->sleep(); 
+```
+
+* __Resume__ 
+```php
+//    resume the device from sleep 
+//    this return bool/mixed
+
+    $zk->resume(); 
+```
+
+* __Voice Test__ 
+```php
+//    voice test of the device "Thank you" 
+//    this return bool/mixed
+
+    $zk->testVoice(); 
+```
+
 * __Platform__ 
 ```php
 //    get platform 
