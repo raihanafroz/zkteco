@@ -21,6 +21,8 @@ composer require rats/zkteco
 ```
 The package will automatically register itself.
 
+You have to enable your php socket if it is not enable. 
+
 
 ## Usage
 
@@ -260,6 +262,14 @@ The package will automatically register itself.
 //    get attendance log
 
 //    return array[]
+
+//    like as 0 => array:5 [▼
+//              "uid" => 1      /* serial number of the attendance */
+//              "id" => "1"     /* user id of the application */
+//              "state" => 1    /* the authentication type, 1 for Fingerprint, 4 for RF Card etc */
+//              "timestamp" => "2020-05-27 21:21:06" /* time of attendance */
+//              "type" => 255   /* attendance type, like check-in, check-out, overtime-in, overtime-out, break-in & break-out etc. if attendance type is none of them, it gives  255. */
+//              ]
 
     $zk->getAttendance(); 
 ```
