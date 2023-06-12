@@ -9,11 +9,11 @@ class ZktecoServiceProvider extends ServiceProvider
 
     public function boot()
     {
-//    dd("Zkteco is running");
+        //
     }
 
     public function register()
     {
-
+        //
     }
 }

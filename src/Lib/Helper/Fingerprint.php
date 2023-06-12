@@ -10,10 +10,10 @@ class Fingerprint
      * TODO: Can get data, but don't know how to parse the data. Need more documentation about it...
      *
      * @param ZKTeco $self
-     * @param integer $uid Unique Employee ID in ZK device
+     * @param int $uid Unique Employee ID in ZK device
      * @return array Binary fingerprint data array (where key is finger ID (0-9))
      */
-    static public function get(ZKTeco $self, $uid)
+    static public function get(ZKTeco $self, int $uid): array
     {
         $self->_section = __METHOD__;
 
@@ -33,11 +33,11 @@ class Fingerprint
 
     /**
      * @param ZKTeco $self
-     * @param integer $uid Unique Employee ID in ZK device
-     * @param integer $finger Finger ID (0-9)
+     * @param int $uid Unique Employee ID in ZK device
+     * @param int $finger Finger ID (0-9)
      * @return array
      */
-    private function _getFinger(ZKTeco $self, $uid, $finger)
+    private function _getFinger(ZKTeco $self, int $uid, int $finger): array
     {
         $command = Util::CMD_USER_TEMP_RRQ;
         $byte1 = chr((int)($uid % 256));
@@ -77,10 +77,9 @@ class Fingerprint
      * @param array $data Binary fingerprint data array (where key is finger ID (0-9) same like returned array from 'get' method)
      * @return int Count of added fingerprints
      */
-    static public function set(ZKTeco $self, $uid, array $data)
+    static public function set(ZKTeco $self, int $uid, array $data): int
     {
         $self->_section = __METHOD__;
-
 
         $count = 0;
         foreach ($data as $finger => $item) {
@@ -103,7 +102,7 @@ class Fingerprint
      * @param int $finger Finger ID (0-9)
      * @return bool Returned true if exist
      */
-    private function _checkFinger(ZKTeco $self, $uid, $finger)
+    private function _checkFinger(ZKTeco $self, int $uid, int $finger): bool
     {
         $fingerPrint = new Fingerprint();
         $res = $fingerPrint->_getFinger($self, $uid, $finger);
@@ -116,7 +115,7 @@ class Fingerprint
      * @param int $finger Finger ID (0-9)
      * @return bool
      */
-    private function _removeFinger(ZKTeco $self, $uid, $finger)
+    private function _removeFinger(ZKTeco $self, int $uid, int $finger): bool
     {
         $command = Util::CMD_DELETE_USER_TEMP;
         $byte1 = chr((int)($uid % 256));
@@ -131,9 +130,9 @@ class Fingerprint
     /**
      * @param ZKTeco $self
      * @param string $data Binary fingerprint data item
-     * @return bool|mixed
+     * @return mixed
      */
-    private function _setFinger(ZKTeco $self, $data)
+    private function _setFinger(ZKTeco $self, string $data): mixed
     {
         $command = Util::CMD_USER_TEMP_WRQ;
         $command_string = $data;
@@ -147,7 +146,7 @@ class Fingerprint
      * @param array $data Fingers ID array (0-9)
      * @return int Count of deleted fingerprints
      */
-    static public function remove(ZKTeco $self, $uid, array $data)
+    static public function remove(ZKTeco $self, int $uid, array $data): int
     {
         $self->_section = __METHOD__;
 

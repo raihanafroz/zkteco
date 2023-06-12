@@ -1,19 +1,21 @@
 {
-    "name": "rats/zkteco",
-    "description": "ZKTeco Laravel Library",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Raihan Afroz",
-            "email": "raihanafroz9@gmail.com"
-        }
-    ],
-    "autoload": {
-      "psr-4":{
-          "Rats\\Zkteco\\": "src"
-      }
-    },
-    "minimum-stability": "dev",
-    "require": {}
+  "name": "rats/zkteco",
+  "description": "ZKTeco Laravel Library",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Raihan Afroz",
+      "email": "raihanafroz9@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Rats\\Zkteco\\": "src"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "ext-sockets": "*"
+  }
 }

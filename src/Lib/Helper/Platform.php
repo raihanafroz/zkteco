@@ -7,10 +7,12 @@ use Rats\Zkteco\Lib\ZKTeco;
 class Platform
 {
     /**
+     * Get platform information
+     *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function get(ZKTeco $self)
+    static public function get(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -21,10 +23,12 @@ class Platform
     }
 
     /**
+     * Get device version
+     *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function getVersion(ZKTeco $self)
+    static public function getVersion(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 

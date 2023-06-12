@@ -9,10 +9,12 @@ use Rats\Zkteco\Lib\ZKTeco;
 class Connect
 {
     /**
+     * Connect Device
+     *
      * @param ZKTeco $self
      * @return bool
      */
-    static public function connect(ZKTeco $self)
+    static public function connect(ZKTeco $self): bool
     {
         $self->_section = __METHOD__;
 
@@ -47,10 +49,12 @@ class Connect
     }
 
     /**
+     * Disconnected device
+     *
      * @param ZKTeco $self
      * @return bool
      */
-    static public function disconnect(ZKTeco $self)
+    static public function disconnect(ZKTeco $self): bool
     {
         $self->_section = __METHOD__;
 

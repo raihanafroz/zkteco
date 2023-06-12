@@ -10,9 +10,9 @@ class Os
      * This will get the Operating System Information
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function get(ZKTeco $self)
+    static public function get(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 

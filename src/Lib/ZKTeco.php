@@ -2,7 +2,6 @@
 
 namespace Rats\Zkteco\Lib;
 
-use ErrorException;
 use Exception;
 use Rats\Zkteco\Lib\Helper\Attendance;
 use Rats\Zkteco\Lib\Helper\Connect;
@@ -23,28 +22,29 @@ use Rats\Zkteco\Lib\Helper\WorkCode;
 
 class ZKTeco
 {
-    public $_ip;
-    public $_port;
-    public $_zkclient;
+    public string $_ip;
+    public int $_port;
+    public $_zkClient;
 
-    public $_data_recv = '';
-    public $_session_id = 0;
-    public $_section = '';
+    public string $_data_recv = '';
+    public int $_session_id = 0;
+    public string $_section = '';
 
     /**
      * ZKLib constructor.
+     *
      * @param string $ip Device IP
-     * @param integer $port Default: 4370
+     * @param int $port Default: 4370
      */
-    public function __construct($ip, $port = 4370)
+    public function __construct(string $ip, $port = 4370)
     {
         $this->_ip = $ip;
         $this->_port = $port;
 
-        $this->_zkclient = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+        $this->_zkClient = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
         $timeout = array('sec' => 60, 'usec' => 500000);
-        socket_set_option($this->_zkclient, SOL_SOCKET, SO_RCVTIMEO, $timeout);
+        socket_set_option($this->_zkClient, SOL_SOCKET, SO_RCVTIMEO, $timeout);
 
     }
 
@@ -54,22 +54,23 @@ class ZKTeco
      * @param string $command
      * @param string $command_string
      * @param string $type
-     * @return bool|mixed
+     *
+     * @return float|bool|int|string
      */
-    public function _command($command, $command_string, $type = Util::COMMAND_TYPE_GENERAL)
+    public function _command(string $command, string $command_string, $type = Util::COMMAND_TYPE_GENERAL): float|bool|int|string
     {
-        $chksum = 0;
+        $checkSum = 0;
         $session_id = $this->_session_id;
 
         $u = unpack('H2h1/H2h2/H2h3/H2h4/H2h5/H2h6/H2h7/H2h8', substr($this->_data_recv, 0, 8));
         $reply_id = hexdec($u['h8'] . $u['h7']);
 
-        $buf = Util::createHeader($command, $chksum, $session_id, $reply_id, $command_string);
+        $buf = Util::createHeader($command, $checkSum, $session_id, $reply_id, $command_string);
 
-        socket_sendto($this->_zkclient, $buf, strlen($buf), 0, $this->_ip, $this->_port);
+        socket_sendto($this->_zkClient, $buf, strlen($buf), 0, $this->_ip, $this->_port);
 
         try {
-            @socket_recvfrom($this->_zkclient, $this->_data_recv, 1024, 0, $this->_ip, $this->_port);
+            @socket_recvfrom($this->_zkClient, $this->_data_recv, 1024, 0, $this->_ip, $this->_port);
 
             $u = unpack('H2h1/H2h2/H2h3/H2h4/H2h5/H2h6', substr($this->_data_recv, 0, 8));
 
@@ -83,7 +84,7 @@ class ZKTeco
             }
 
             return $ret;
-        } catch (ErrorException | Exception $e) {
+        } catch (Exception) {
             return false;
         }
     }
@@ -93,7 +94,7 @@ class ZKTeco
      *
      * @return bool
      */
-    public function connect()
+    public function connect(): bool
     {
         return Connect::connect($this);
     }
@@ -103,7 +104,7 @@ class ZKTeco
      *
      * @return bool
      */
-    public function disconnect()
+    public function disconnect(): bool
     {
         return Connect::disconnect($this);
     }
@@ -111,9 +112,9 @@ class ZKTeco
     /**
      * Get device version
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function version()
+    public function version(): mixed
     {
         return Version::get($this);
     }
@@ -121,9 +122,9 @@ class ZKTeco
     /**
      * Get OS version
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function osVersion()
+    public function osVersion(): mixed
     {
         return Os::get($this);
     }
@@ -131,9 +132,9 @@ class ZKTeco
     /**
      * Get platform
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function platform()
+    public function platform(): mixed
     {
         return Platform::get($this);
     }
@@ -141,9 +142,9 @@ class ZKTeco
     /**
      * Get firmware version
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function fmVersion()
+    public function fmVersion(): mixed
     {
         return Platform::getVersion($this);
     }
@@ -151,9 +152,9 @@ class ZKTeco
     /**
      * Get work code
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function workCode()
+    public function workCode(): mixed
     {
         return WorkCode::get($this);
     }
@@ -161,9 +162,9 @@ class ZKTeco
     /**
      * Get SSR
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function ssr()
+    public function ssr(): mixed
     {
         return Ssr::get($this);
     }
@@ -171,17 +172,17 @@ class ZKTeco
     /**
      * Get pin width
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function pinWidth()
+    public function pinWidth(): mixed
     {
         return Pin::width($this);
     }
 
     /**
-     * @return bool|mixed
+     * @return mixed
      */
-    public function faceFunctionOn()
+    public function faceFunctionOn(): mixed
     {
         return Face::on($this);
     }
@@ -189,9 +190,9 @@ class ZKTeco
     /**
      * Get device serial number
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function serialNumber()
+    public function serialNumber(): mixed
     {
         return SerialNumber::get($this);
     }
@@ -199,9 +200,9 @@ class ZKTeco
     /**
      * Get device name
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function deviceName()
+    public function deviceName(): mixed
     {
         return Device::name($this);
     }
@@ -209,9 +210,9 @@ class ZKTeco
     /**
      * Disable device
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function disableDevice()
+    public function disableDevice(): mixed
     {
         return Device::disable($this);
     }
@@ -219,9 +220,9 @@ class ZKTeco
     /**
      * Enable device
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function enableDevice()
+    public function enableDevice(): mixed
     {
         return Device::enable($this);
     }
@@ -231,7 +232,7 @@ class ZKTeco
      *
      * @return array [userid, name, cardno, uid, role, password]
      */
-    public function getUser()
+    public function getUser(): array
     {
         return User::get($this);
     }
@@ -244,21 +245,20 @@ class ZKTeco
      * @param string $name (max length = 24)
      * @param int|string $password (max length = 8, only numbers - depends device setting)
      * @param int $role Default Util::LEVEL_USER
-     * @param int $cardno Default 0 (max length = 10, only numbers)
-     * @return bool|mixed
+     * @param int $cardNo
+     * @return mixed
      */
-    public function setUser($uid, $userid, $name, $password, $role = Util::LEVEL_USER, $cardno = 0)
+    public function setUser(int $uid, int|string $userid, string $name, int|string $password, $role = Util::LEVEL_USER, $cardNo = 0): mixed
     {
-        return User::set($this, $uid, $userid, $name, $password, $role, $cardno);
+        return User::set($this, $uid, $userid, $name, $password, $role, $cardNo);
     }
-
 
     /**
      * Remove All users
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function clearUsers()
+    public function clearUsers(): mixed
     {
         return User::clear($this);
     }
@@ -266,9 +266,9 @@ class ZKTeco
     /**
      * Remove admin
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function clearAdmin()
+    public function clearAdmin(): mixed
     {
         return User::clearAdmin($this);
     }
@@ -278,7 +278,7 @@ class ZKTeco
      *
      * @return mixed
      */
-    public function clearAccessControl()
+    public function clearAccessControl(): mixed
     {
         return User::clearAccessControl($this);
     }
@@ -286,23 +286,22 @@ class ZKTeco
     /**
      * Remove user by UID
      *
-     * @param integer $uid
-     * @return bool|mixed
+     * @param int $uid
+     * @return mixed
      */
-    public function removeUser($uid)
+    public function removeUser(int $uid): mixed
     {
         return User::remove($this, $uid);
     }
-
 
     /**
      * Get fingerprint data array by UID
      * TODO: Can get data, but don't know how to parse the data. Need more documentation about it...
      *
-     * @param integer $uid Unique ID (max 65535)
+     * @param int $uid Unique ID (max 65535)
      * @return array Binary fingerprint data array (where key is finger ID (0-9))
      */
-    public function getFingerprint($uid)
+    public function getFingerprint(int $uid): array
     {
         return Fingerprint::get($this, $uid);
     }
@@ -311,11 +310,11 @@ class ZKTeco
      * Set fingerprint data array
      * TODO: Still can not set fingerprint. Need more documentation about it...
      *
-     * @param integer $uid Unique ID (max 65535)
+     * @param int $uid Unique ID (max 65535)
      * @param array $data Binary fingerprint data array (where key is finger ID (0-9) same like returned array from 'getFingerprint' method)
      * @return int Count of added fingerprints
      */
-    public function setFingerprint($uid, array $data)
+    public function setFingerprint(int $uid, array $data): int
     {
         return Fingerprint::set($this, $uid, $data);
     }
@@ -323,22 +322,21 @@ class ZKTeco
     /**
      * Remove fingerprint by UID and fingers ID array
      *
-     * @param integer $uid Unique ID (max 65535)
+     * @param int $uid Unique ID (max 65535)
      * @param array $data Fingers ID array (0-9)
      * @return int Count of deleted fingerprints
      */
-    public function removeFingerprint($uid, array $data)
+    public function removeFingerprint(int $uid, array $data): int
     {
         return Fingerprint::remove($this, $uid, $data);
     }
-
 
     /**
      * Get attendance log
      *
      * @return array [uid, id, state, timestamp]
      */
-    public function getAttendance()
+    public function getAttendance(): array
     {
         return Attendance::get($this);
     }
@@ -346,9 +344,9 @@ class ZKTeco
     /**
      * Clear attendance log
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function clearAttendance()
+    public function clearAttendance(): mixed
     {
         return Attendance::clear($this);
     }
@@ -357,9 +355,9 @@ class ZKTeco
      * Set device time
      *
      * @param string $t Format: "Y-m-d H:i:s"
-     * @return bool|mixed
+     * @return mixed
      */
-    public function setTime($t)
+    public function setTime(string $t): mixed
     {
         return Time::set($this, $t);
     }
@@ -367,20 +365,19 @@ class ZKTeco
     /**
      * Get device time
      *
-     * @return bool|mixed Format: "Y-m-d H:i:s"
+     * @return bool|string Format: "Y-m-d H:i:s"
      */
-    public function getTime()
+    public function getTime(): bool|string
     {
         return Time::get($this);
     }
 
-
     /**
      * turn off the device
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function shutdown()
+    public function shutdown(): mixed
     {
         return Device::powerOff($this);
     }
@@ -388,54 +385,59 @@ class ZKTeco
     /**
      * restart the device
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function restart()
+    public function restart(): mixed
     {
         return Device::restart($this);
     }
 
-
     /**
      * make sleep mood the device
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function sleep()
+    public function sleep(): mixed
     {
         return Device::sleep($this);
     }
 
-
     /**
      * resume the device from sleep
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function resume()
+    public function resume(): mixed
     {
         return Device::resume($this);
     }
 
-
     /**
      * voice test Sound will "Thank you"
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function testVoice()
+    public function testVoice(): mixed
     {
         return Device::testVoice($this);
     }
 
-
-    public function clearLCD()
+    /**
+     * Clear LCD
+     *
+     * @return mixed
+     */
+    public function clearLCD(): mixed
     {
         return Device::clearLCD($this);
     }
 
-
-    public function writeLCD()
+    /**
+     * Write LCD
+     *
+     * @return mixed
+     */
+    public function writeLCD(): mixed
     {
         return Device::writeLCD($this, 2, "RAIHAN Afroz Topu");
     }
@@ -445,7 +447,7 @@ class ZKTeco
      *
      * @return mixed
      */
-    public function refreshData()
+    public function refreshData(): mixed
     {
         return Device::refreshData($this);
     }

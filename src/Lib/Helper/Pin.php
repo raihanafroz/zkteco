@@ -8,9 +8,9 @@ class Pin
 {
     /**
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function width(ZKTeco $self)
+    static public function width(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 

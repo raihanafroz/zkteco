@@ -10,7 +10,7 @@ class Attendance
      * @param ZKTeco $self
      * @return array [uid, id, state, timestamp]
      */
-    static public function get(ZKTeco $self)
+    static public function get(ZKTeco $self): array
     {
         $self->_section = __METHOD__;
 
@@ -60,9 +60,9 @@ class Attendance
      * This will Delete attendance record
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function clear(ZKTeco $self)
+    static public function clear(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 

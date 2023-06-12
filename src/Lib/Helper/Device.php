@@ -10,9 +10,9 @@ class Device
      * This will showing the device name
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function name(ZKTeco $self)
+    static public function name(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -26,9 +26,9 @@ class Device
      * This will enable the device
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function enable(ZKTeco $self)
+    static public function enable(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -42,9 +42,9 @@ class Device
      * This will disable the device
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function disable(ZKTeco $self)
+    static public function disable(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -58,9 +58,9 @@ class Device
      * This will turn off the device
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    public static function powerOff(ZKTeco $self)
+    public static function powerOff(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -74,9 +74,9 @@ class Device
      * This will restart the device
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    public static function restart(ZKTeco $self)
+    public static function restart(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -90,9 +90,9 @@ class Device
      * This will sleep the device
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    public static function sleep(ZKTeco $self)
+    public static function sleep(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -106,9 +106,9 @@ class Device
      * This will resume the device from sleep
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    public static function resume(ZKTeco $self)
+    public static function resume(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -122,9 +122,9 @@ class Device
      * This will play voice "Thank you"
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    public static function testVoice(ZKTeco $self)
+    public static function testVoice(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -138,9 +138,9 @@ class Device
      * This will clear the LCD screen
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    public static function clearLCD(ZKTeco $self)
+    public static function clearLCD(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -153,9 +153,9 @@ class Device
      * @param ZKTeco $self
      * @param $rank *** Line number of text
      * @param $text *** Text which will display in the LCD screen
-     * @return bool|mixed *** this will write text into the LCD
+     * @return mixed *** this will write text into the LCD
      */
-    public static function writeLCD(ZKTeco $self, $rank, $text)
+    public static function writeLCD(ZKTeco $self, $rank, $text): mixed
     {
         $self->_section = __METHOD__;
 
@@ -171,9 +171,9 @@ class Device
      * This will refresh the machine interior data
      *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    public static function refreshData(ZKTeco $self)
+    public static function refreshData(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 

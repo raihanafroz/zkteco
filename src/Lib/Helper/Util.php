@@ -18,7 +18,7 @@ class Util
     const CMD_SLEEP = 1006; # Sleep the machine
     const CMD_RESUME = 1007; # Resume the machine from Sleep
     const CMD_TEST_TEMP = 1011;
-    const CMD_REFRESH_DATA = 1013;
+    const CMD_REFRESH_DATA = 1013; # Refresh the machine interior data
     const CMD_TESTVOICE = 1017; # Voice test to the device
     const CMD_CHANGE_SPEED = 1101;
 
@@ -51,7 +51,7 @@ class Util
     const CMD_DELETE_USER = 18; # Delete some user
     const CMD_DELETE_USER_TEMP = 19; # Delete some fingerprint template
     const CMD_CLEAR_ADMIN = 20; # Cancel the manager
-    const CMD_CLEAR_ACC = 32; # Cancel the manager
+    const CMD_CLEAR_ACC = 32; # Restores Access Control set to the default condition
 
     const LEVEL_USER = 0; # User level as User
     const LEVEL_ADMIN = 14; # User level as Admin
@@ -77,13 +77,13 @@ class Util
     const ATT_TYPE_OVERTIME_OUT = 5;
 
     /**
-     * Encode a timestamp send at the timeclock
+     * Encode a timestamp send at the time clock
      * copied from zkemsdk.c - EncodeTime
      *
      * @param string $t Format: "Y-m-d H:i:s"
-     * @return int
+     * @return float|int
      */
-    static public function encodeTime($t)
+    static public function encodeTime(string $t): float|int
     {
         $timestamp = strtotime($t);
         $t = (object)[
@@ -95,10 +95,8 @@ class Util
             'second' => (int)date('s', $timestamp),
         ];
 
-        $d = (($t->year % 100) * 12 * 31 + (($t->month - 1) * 31) + $t->day - 1) *
+        return (($t->year % 100) * 12 * 31 + (($t->month - 1) * 31) + $t->day - 1) *
             (24 * 60 * 60) + ($t->hour * 60 + $t->minute) * 60 + $t->second;
-
-        return $d;
     }
 
     /**
@@ -108,7 +106,7 @@ class Util
      * @param int|string $t
      * @return false|string Format: "Y-m-d H:i:s"
      */
-    static public function decodeTime($t)
+    static public function decodeTime(int|string $t): false|string
     {
         $second = $t % 60;
         $t = $t / 60;
@@ -127,18 +125,16 @@ class Util
 
         $year = floor($t + 2000);
 
-        $d = date('Y-m-d H:i:s', strtotime(
+        return date('Y-m-d H:i:s', strtotime(
             $year . '-' . $month . '-' . $day . ' ' . $hour . ':' . $minute . ':' . $second
         ));
-
-        return $d;
     }
 
     /**
      * @param string $hex
      * @return string
      */
-    static public function reverseHex($hex)
+    static public function reverseHex(string $hex): string
     {
         $tmp = '';
 
@@ -154,31 +150,33 @@ class Util
      * This function puts a the parts that make up a packet together and
      * packs them into a byte string
      *
-     * @inheritdoc
+     * @param $command
+     * @param $checkSum
+     * @param $session_id
+     * @param $reply_id
+     * @param $command_string
+     * @return string
      */
-    static public function createHeader($command, $chksum, $session_id, $reply_id, $command_string)
+    static public function createHeader($command, $checkSum, $session_id, $reply_id, $command_string): string
     {
-        $buf = pack('SSSS', $command, $chksum, $session_id, $reply_id) . $command_string;
-
+        $buf = pack('SSSS', $command, $checkSum, $session_id, $reply_id) . $command_string;
         $buf = unpack('C' . (8 + strlen($command_string)) . 'c', $buf);
-
         $u = unpack('S', self::createChkSum($buf));
 
         if (is_array($u)) {
             $u = reset($u);
         }
-        $chksum = $u;
 
+        $checkSum = $u;
         $reply_id += 1;
 
         if ($reply_id >= self::USHRT_MAX) {
             $reply_id -= self::USHRT_MAX;
         }
 
-        $buf = pack('SSSS', $command, $chksum, $session_id, $reply_id);
+        $buf = pack('SSSS', $command, $checkSum, $session_id, $reply_id);
 
         return $buf . $command_string;
-
     }
 
     /**
@@ -186,55 +184,57 @@ class Util
      * time clock
      * Copied from zkemsdk.c
      *
-     * @inheritdoc
+     * @param $p
+     * @return bool|string
      */
-    static public function createChkSum($p)
+    static public function createChkSum($p): bool|string
     {
         $l = count($p);
-        $chksum = 0;
+        $checkSum = 0;
         $i = $l;
         $j = 1;
         while ($i > 1) {
             $u = unpack('S', pack('C2', $p['c' . $j], $p['c' . ($j + 1)]));
 
-            $chksum += $u[1];
+            $checkSum += $u[1];
 
-            if ($chksum > self::USHRT_MAX) {
-                $chksum -= self::USHRT_MAX;
+            if ($checkSum > self::USHRT_MAX) {
+                $checkSum -= self::USHRT_MAX;
             }
             $i -= 2;
             $j += 2;
         }
 
         if ($i) {
-            $chksum = $chksum + $p['c' . strval(count($p))];
+            $checkSum = $checkSum + $p['c' . strval(count($p))];
         }
 
-        while ($chksum > self::USHRT_MAX) {
-            $chksum -= self::USHRT_MAX;
+        while ($checkSum > self::USHRT_MAX) {
+            $checkSum -= self::USHRT_MAX;
         }
 
-        if ($chksum > 0) {
-            $chksum = -($chksum);
+        if ($checkSum > 0) {
+            $checkSum = -($checkSum);
         } else {
-            $chksum = abs($chksum);
+            $checkSum = abs($checkSum);
         }
 
-        $chksum -= 1;
-        while ($chksum < 0) {
-            $chksum += self::USHRT_MAX;
+        $checkSum -= 1;
+        while ($checkSum < 0) {
+            $checkSum += self::USHRT_MAX;
         }
 
-        return pack('S', $chksum);
+        return pack('S', $checkSum);
     }
 
     /**
      * Checks a returned packet to see if it returned Util::CMD_ACK_OK,
      * indicating success
      *
-     * @inheritdoc
+     * @param $reply
+     * @return bool
      */
-    static public function checkValid($reply)
+    static public function checkValid($reply): bool
     {
         $u = unpack('H2h1/H2h2', substr($reply, 0, 8));
 
@@ -249,84 +249,61 @@ class Util
 
     /**
      * Get User Role string
-     * @param integer $role
+     *
+     * @param int $role
      * @return string
      */
-    static public function getUserRole($role)
+    static public function getUserRole(int $role): string
     {
-        switch ($role) {
-            case self::LEVEL_USER:
-                $ret = 'User';
-                break;
-            case self::LEVEL_ADMIN:
-                $ret = 'Admin';
-                break;
-            default:
-                $ret = 'Unknown';
-        }
-
-        return $ret;
+        return match ($role) {
+            self::LEVEL_USER => 'User',
+            self::LEVEL_ADMIN => 'Admin',
+            default => 'Unknown',
+        };
     }
 
     /**
      * Get Attendance State string
-     * @param integer $state
+     *
+     * @param int $state
      * @return string
      */
-    static public function getAttState($state)
+    static public function getAttState(int $state): string
     {
-        switch ($state) {
-            case self::ATT_STATE_FINGERPRINT:
-                $ret = 'Fingerprint';
-                break;
-            case self::ATT_STATE_PASSWORD:
-                $ret = 'Password';
-                break;
-            case self::ATT_STATE_CARD:
-                $ret = 'Card';
-                break;
-            default:
-                $ret = 'Unknown';
-        }
-
-        return $ret;
+        return match ($state) {
+            self::ATT_STATE_FINGERPRINT => 'Fingerprint',
+            self::ATT_STATE_PASSWORD => 'Password',
+            self::ATT_STATE_CARD => 'Card',
+            default => 'Unknown',
+        };
     }
 
     /**
      * Get Attendance Type string
-     * @param integer $type
+     *
+     * @param int $type
      * @return string
      */
-    static public function getAttType($type)
+    static public function getAttType(int $type): string
     {
-        switch ($type) {
-            case self::ATT_TYPE_CHECK_IN:
-                $ret = 'Check-in';
-                break;
-            case self::ATT_TYPE_CHECK_OUT:
-                $ret = 'Check-out';
-                break;
-            case self::ATT_TYPE_OVERTIME_IN:
-                $ret = 'Overtime-in';
-                break;
-            case self::ATT_TYPE_OVERTIME_OUT:
-                $ret = 'Overtime-out';
-                break;
-            default:
-                $ret = 'Undefined';
-        }
-
-        return $ret;
+        return match ($type) {
+            self::ATT_TYPE_CHECK_IN => 'Check-in',
+            self::ATT_TYPE_CHECK_OUT => 'Check-out',
+            self::ATT_TYPE_OVERTIME_IN => 'Overtime-in',
+            self::ATT_TYPE_OVERTIME_OUT => 'Overtime-out',
+            default => 'Undefined',
+        };
     }
 
     /**
      * Receive data from device
+     *
      * @param ZKTeco $self
      * @param int $maxErrors
      * @param bool $first if 'true' don't remove first 4 bytes for first row
      * @return string
      */
-    static public function recData(ZKTeco $self, $maxErrors = 10, $first = true)
+    static public function recData(ZKTeco $self, $maxErrors = 10, $first = true): string
     {
         $data = '';
         $bytes = self::getSize($self);
@@ -345,7 +322,7 @@ class Util
                         sleep(1);
                         continue;
                     } else {
-                        //return empty if has maximum count of errors
+                        // return empty if has maximum count of errors
                         self::logReceived($self, $received, $bytes);
                         unset($data);
                         return '';
@@ -378,17 +355,16 @@ class Util
      * Returns the amount of bytes that are going to be sent
      *
      * @param ZKTeco $self
-     * @return bool|number
+     * @return bool
      */
-    static public function getSize(ZKTeco $self)
+    static public function getSize(ZKTeco $self): bool
     {
         $u = unpack('H2h1/H2h2/H2h3/H2h4/H2h5/H2h6/H2h7/H2h8', substr($self->_data_recv, 0, 8));
         $command = hexdec($u['h2'] . $u['h1']);
 
         if ($command == self::CMD_PREPARE_DATA) {
             $u = unpack('H2h1/H2h2/H2h3/H2h4', substr($self->_data_recv, 8, 4));
-            $size = hexdec($u['h4'] . $u['h3'] . $u['h2'] . $u['h1']);
-            return $size;
+            return hexdec($u['h4'] . $u['h3'] . $u['h2'] . $u['h1']);
         } else {
             return false;
         }
@@ -399,17 +375,18 @@ class Util
      * @param int $received
      * @param int $bytes
      */
-    static private function logReceived(ZKTeco $self, $received, $bytes)
+    static private function logReceived(ZKTeco $self, int $received, int $bytes)
     {
         self::logger($self, 'Received: ' . $received . ' of ' . $bytes . ' bytes');
     }
 
     /**
      * Write log
+     *
      * @param ZKTeco $self
      * @param string $str
      */
-    static private function logger(ZKTeco $self, $str)
+    static private function logger(ZKTeco $self, string $str)
     {
         if (defined('ZK_LIB_LOG')) {
             //use constant if defined
