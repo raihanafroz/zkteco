@@ -7,6 +7,8 @@ use Rats\Zkteco\Lib\ZKTeco;
 class Os
 {
     /**
+     * This will get the Operating System Information
+     *
      * @param ZKTeco $self
      * @return bool|mixed
      */

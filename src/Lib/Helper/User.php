@@ -47,7 +47,7 @@ class User
             str_pad($userid, 9, chr(0)),
             str_repeat(chr(0), 15)
         ]);
-//        die($command_string);
+
         return $self->_command($command, $command_string);
     }
 
@@ -155,6 +155,22 @@ class User
         $byte1 = chr((int)($uid % 256));
         $byte2 = chr((int)($uid >> 8));
         $command_string = ($byte1 . $byte2);
+
+        return $self->_command($command, $command_string);
+    }
+
+    /**
+     * This will restores Access Control set to the default condition
+     *
+     * @param ZKTeco $self
+     * @return bool|mixed
+     */
+    static public function clearAccessControl(ZKTeco $self)
+    {
+        $self->_section = __METHOD__;
+
+        $command = Util::CMD_CLEAR_ACC;
+        $command_string = '';
 
         return $self->_command($command, $command_string);
     }

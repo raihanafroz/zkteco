@@ -240,12 +240,21 @@ You have to enable your php socket if it is not enable.
     $zk->clearAdmin(); 
 ```
 
-* __Clear All Users__ 
+* __Clear All Users__
 ```php
 //    remove all users
 //    return bool|mixed
 
     $zk->clearAdmin(); 
+```
+
+* __Restores Access Control set to the default condition.__
+```php
+//    Restores Access Control set to the default condition
+
+//    return mixed
+
+    $zk->clearAccessControl(); 
 ```
 
 * __Remove A User__ 
@@ -274,7 +283,7 @@ You have to enable your php socket if it is not enable.
     $zk->getAttendance(); 
 ```
 
-* __Clear Attendance Log__ 
+* __Clear Attendance Log__
 ```php
 //    clear attendance log
 
@@ -283,7 +292,13 @@ You have to enable your php socket if it is not enable.
     $zk->clearAttendance(); 
 ```
 
+* __Refresh Machine Interior Data__
+```php
+//    Refresh Machine Interior Data
 
+//    return mixed
+    $zk->refreshData(); 
+```
 
 
 

@@ -2,10 +2,9 @@
 
 namespace Rats\Zkteco\Lib\Helper;
 
-use Rats\Zkteco\Lib\Helper\Util;
-use Rats\Zkteco\Lib\ZKTeco;
 use ErrorException;
 use Exception;
+use Rats\Zkteco\Lib\ZKTeco;
 
 class Connect
 {
@@ -42,9 +41,7 @@ class Connect
             } else {
                 return false;
             }
-        } catch (ErrorException $e) {
-            return false;
-        } catch (Exception $e) {
+        } catch (ErrorException | Exception $e) {
             return false;
         }
     }
@@ -74,9 +71,7 @@ class Connect
 
             $self->_session_id = 0;
             return Util::checkValid($self->_data_recv);
-        } catch (ErrorException $e) {
-            return false;
-        } catch (Exception $e) {
+        } catch (ErrorException | Exception $e) {
             return false;
         }
     }
