@@ -7,11 +7,13 @@ use Rats\Zkteco\Lib\ZKTeco;
 class Time
 {
     /**
+     * Set time
+     *
      * @param ZKTeco $self
      * @param string $t Format: "Y-m-d H:i:s"
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function set(ZKTeco $self, $t)
+    static public function set(ZKTeco $self, string $t): mixed
     {
         $self->_section = __METHOD__;
 
@@ -22,10 +24,12 @@ class Time
     }
 
     /**
+     * Get time
+     *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return bool|string
      */
-    static public function get(ZKTeco $self)
+    static public function get(ZKTeco $self): bool|string
     {
         $self->_section = __METHOD__;
 

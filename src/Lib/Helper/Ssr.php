@@ -8,9 +8,9 @@ class Ssr
 {
     /**
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function get(ZKTeco $self)
+    static public function get(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 

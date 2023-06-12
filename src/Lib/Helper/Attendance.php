@@ -10,7 +10,7 @@ class Attendance
      * @param ZKTeco $self
      * @return array [uid, id, state, timestamp]
      */
-    static public function get(ZKTeco $self)
+    static public function get(ZKTeco $self): array
     {
         $self->_section = __METHOD__;
 
@@ -38,8 +38,8 @@ class Attendance
                 $id = str_replace(chr(0), '', $id);
                 $state = hexdec(substr($u[1], 56, 2));
                 $timestamp = Util::decodeTime(hexdec(Util::reverseHex(substr($u[1], 58, 8))));
-                $type = hexdec(Util::reverseHex(substr($u[1], 66, 2 )));
-				
+                $type = hexdec(Util::reverseHex(substr($u[1], 66, 2)));
+
                 $attendance[] = [
                     'uid' => $uid,
                     'id' => $id,
@@ -57,10 +57,12 @@ class Attendance
     }
 
     /**
+     * This will Delete attendance record
+     *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function clear(ZKTeco $self)
+    static public function clear(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 

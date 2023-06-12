@@ -7,10 +7,12 @@ use Rats\Zkteco\Lib\ZKTeco;
 class Face
 {
     /**
+     * Face on
+     *
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function on(ZKTeco $self)
+    static public function on(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 

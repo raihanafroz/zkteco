@@ -7,16 +7,18 @@ use Rats\Zkteco\Lib\ZKTeco;
 class User
 {
     /**
+     * Set user
+     *
      * @param ZKTeco $self
      * @param int $uid Unique ID (max 65535)
      * @param int|string $userid (max length = 9, only numbers - depends device setting)
      * @param string $name (max length = 24)
      * @param int|string $password (max length = 8, only numbers - depends device setting)
      * @param int $role Default Util::LEVEL_USER
-     * @param int $cardno Default 0 (max length = 10, only numbers)
-     * @return bool|mixed
+     * @param int $cardNo
+     * @return mixed
      */
-    static public function set(ZKTeco $self, $uid, $userid, $name, $password, $role = Util::LEVEL_USER, $cardno = 0)
+    static public function set(ZKTeco $self, int $uid, int|string $userid, string $name, int|string $password, $role = Util::LEVEL_USER, $cardNo = 0): mixed
     {
         $self->_section = __METHOD__;
 
@@ -26,7 +28,7 @@ class User
             strlen($userid) > 9 ||
             strlen($name) > 24 ||
             strlen($password) > 8 ||
-            strlen($cardno) > 10
+            strlen($cardNo) > 10
         ) {
             return false;
         }
@@ -34,7 +36,7 @@ class User
         $command = Util::CMD_SET_USER;
         $byte1 = chr((int)($uid % 256));
         $byte2 = chr((int)($uid >> 8));
-        $cardno = hex2bin(Util::reverseHex(dechex($cardno)));
+        $cardNo = hex2bin(Util::reverseHex(dechex($cardNo)));
 
         $command_string = implode('', [
             $byte1,
@@ -42,20 +44,22 @@ class User
             chr($role),
             str_pad($password, 8, chr(0)),
             str_pad($name, 24, chr(0)),
-            str_pad($cardno, 4, chr(0)),
+            str_pad($cardNo, 4, chr(0)),
             str_pad(chr(1), 9, chr(0)),
             str_pad($userid, 9, chr(0)),
             str_repeat(chr(0), 15)
         ]);
-//        die($command_string);
+
         return $self->_command($command, $command_string);
     }
 
     /**
+     * Get user
+     *
      * @param ZKTeco $self
      * @return array [userid, name, cardno, uid, role, password]
      */
-    static public function get(ZKTeco $self)
+    static public function get(ZKTeco $self): array
     {
         $self->_section = __METHOD__;
 
@@ -79,7 +83,7 @@ class User
                 $u1 = hexdec(substr($u[1], 2, 2));
                 $u2 = hexdec(substr($u[1], 4, 2));
                 $uid = $u1 + ($u2 * 256);
-                $cardno = hexdec(substr($u[1], 78, 2) . substr($u[1], 76, 2) . substr($u[1], 74, 2) . substr($u[1], 72, 2)) . ' ';
+                $cardNo = hexdec(substr($u[1], 78, 2) . substr($u[1], 76, 2) . substr($u[1], 74, 2) . substr($u[1], 72, 2)) . ' ';
                 $role = hexdec(substr($u[1], 6, 2)) . ' ';
                 $password = hex2bin(substr($u[1], 8, 16)) . ' ';
                 $name = hex2bin(substr($u[1], 24, 74)) . ' ';
@@ -92,7 +96,7 @@ class User
                 $userid = $userid[0];
                 $name = explode(chr(0), $name, 3);
                 $name = utf8_encode($name[0]);
-                $cardno = str_pad($cardno, 11, '0', STR_PAD_LEFT);
+                $cardNo = str_pad($cardNo, 11, '0', STR_PAD_LEFT);
 
                 if ($name == '') {
                     $name = $userid;
@@ -104,7 +108,7 @@ class User
                     'name' => $name,
                     'role' => intval($role),
                     'password' => $password,
-                    'cardno' => $cardno,
+                    'cardno' => $cardNo,
                 ];
 
                 $userData = substr($userData, 72);
@@ -116,9 +120,9 @@ class User
 
     /**
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function clear(ZKTeco $self)
+    static public function clear(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -130,9 +134,9 @@ class User
 
     /**
      * @param ZKTeco $self
-     * @return bool|mixed
+     * @return mixed
      */
-    static public function clearAdmin(ZKTeco $self)
+    static public function clearAdmin(ZKTeco $self): mixed
     {
         $self->_section = __METHOD__;
 
@@ -144,10 +148,10 @@ class User
 
     /**
      * @param ZKTeco $self
-     * @param integer $uid
-     * @return bool|mixed
+     * @param int $uid
+     * @return mixed
      */
-    static public function remove(ZKTeco $self, $uid)
+    static public function remove(ZKTeco $self, int $uid): mixed
     {
         $self->_section = __METHOD__;
 
@@ -155,6 +159,22 @@ class User
         $byte1 = chr((int)($uid % 256));
         $byte2 = chr((int)($uid >> 8));
         $command_string = ($byte1 . $byte2);
+
+        return $self->_command($command, $command_string);
+    }
+
+    /**
+     * This will restores Access Control set to the default condition
+     *
+     * @param ZKTeco $self
+     * @return mixed
+     */
+    static public function clearAccessControl(ZKTeco $self): mixed
+    {
+        $self->_section = __METHOD__;
+
+        $command = Util::CMD_CLEAR_ACC;
+        $command_string = '';
 
         return $self->_command($command, $command_string);
     }
