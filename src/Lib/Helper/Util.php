@@ -140,6 +140,11 @@ class Util
   {
     $tmp = '';
 
+    // Reversing algorithm needs an even number of digits to work, so we add a leading 0 if needed
+    if (\strlen($hex) % 2 !== 0) {
+      $hex = '0' . $hex;
+    }
+
     for ($i = strlen($hex); $i >= 0; $i--) {
       $tmp .= substr($hex, $i, 2);
       $i--;
